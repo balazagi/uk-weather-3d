@@ -20,40 +20,58 @@
     </p>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
     <script>
+
+      function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
+      var roomId = getParameterByName('roomID');
       var socket = io();
+
+      if(roomId) {
+        console.log("attempting to join room : " + roomId);
+
+      } else {
+        alert("Get a room dude!");
+      }
+
       var movement = 500;
       var accoffset = 200;
       var roundoffset = 100;
       $( "#x-plus" ).click(function() {
-        socket.emit('x-delta', movement);
+        socket.to(roomId).emit('x-delta', movement);
       });
       $( "#x-minus" ).click(function() {
-        socket.emit('x-delta', -movement);
+        socket.to(roomId).emit('x-delta', -movement);
       });
       $( "#y-plus" ).click(function() {
-        socket.emit('y-delta', movement);
+        socket.to(roomId).emit('y-delta', movement);
       });
       $( "#y-minus" ).click(function() {
-        socket.emit('y-delta', -movement);
+        socket.to(roomId).emit('y-delta', -movement);
       });
       $( "#z-plus" ).click(function() {
-        socket.emit('z-delta', movement);
+        socket.to(roomId).emit('z-delta', movement);
       });
       $( "#z-minus" ).click(function() {
-        socket.emit('z-delta', -movement);
+        socket.to(roomId).emit('z-delta', -movement);
       });
       $( "#reset" ).click(function() {
-        socket.emit('reset', true);
+        socket.to(roomId).emit('reset', true);
       });
       $('#x').change(function (){
-        socket.emit('x', $('#x').val());
+        socket.to(roomId).emit('x', $('#x').val());
       });
       $('#y').change(function (){
-        socket.emit('y', $('#y').val());
+        socket.to(roomId).emit('y', $('#y').val());
       });
       $('#z').change(function (){
-        socket.emit('z', $('#z').val());
+        socket.to(roomId).emit('z', $('#z').val());
       });
 
       socket.on('x', function(msg){
@@ -67,9 +85,9 @@
       });
       window.ondevicemotion = function(event) {
         if ($('input#accelerometer').is(':checked')) {
-          socket.emit('x', Math.round(event.accelerationIncludingGravity.x * accoffset / roundoffset) * roundoffset);
-          socket.emit('y', Math.round(event.accelerationIncludingGravity.y * accoffset / roundoffset) * roundoffset);
-          socket.emit('z', Math.round(event.accelerationIncludingGravity.z * accoffset / roundoffset) * roundoffset);
+          socket.to(roomId).emit('x', Math.round(event.accelerationIncludingGravity.x * accoffset / roundoffset) * roundoffset);
+          socket.to(roomId).emit('y', Math.round(event.accelerationIncludingGravity.y * accoffset / roundoffset) * roundoffset);
+          socket.to(roomId).emit('z', Math.round(event.accelerationIncludingGravity.z * accoffset / roundoffset) * roundoffset);
         }
       }
     </script>

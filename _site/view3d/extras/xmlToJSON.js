@@ -26,7 +26,7 @@ var xmlToJSON = (function () {
         grokAttr: true, // convert truthy attributes to boolean, etc
         grokText: true, // convert truthy text/attr to boolean, etc
         normalize: true, // collapse multiple spaces to single space
-        xmlns: true, // include namespaces as attribute in output
+        xmlns: true, // include rooms as attribute in output
         namespaceKey: '_ns', // tag name for namespace objects
         textKey: '_text', // tag name for text nodes
         valueKey: '_value', // tag name for attribute values
@@ -34,7 +34,7 @@ var xmlToJSON = (function () {
         cdataKey: '_cdata', // tag for cdata nodes (ignored if mergeCDATA is true)
         attrsAsObject: true, // if false, key is used as prefix to name, set prefix to '' to merge children and attrs.
         stripAttrPrefix: true, // remove namespace prefixes from attributes
-        stripElemPrefix: true, // for elements of same name in diff namespaces, you can enable namespaces and access the nskey property
+        stripElemPrefix: true, // for elements of same name in diff rooms, you can enable rooms and access the nskey property
         childrenAsArray: true // force children into arrays
     };
 
